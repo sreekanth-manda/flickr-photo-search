@@ -1,6 +1,6 @@
 import React from 'react';
 import shortid from 'shortid';
-import getImageUrl from '../../Utils/Utils';
+import { getImageUrl } from '../../Utils/Utils';
 import flickerService from '../../Services/FlickrService';
 import Link from '../Link/Link';
 import './Image.scss';
@@ -58,7 +58,7 @@ class Image extends React.Component {
             <span>Tags:</span>
             {this.state.imageMetaData.tags &&
               this.state.imageMetaData.tags.map((item, key) => {
-                return <span className="tag">{item}{','}</span>
+                return <span className="tag" key={shortid.generate()}>{item}{','}</span>
               })}
           </div>
         </div>
