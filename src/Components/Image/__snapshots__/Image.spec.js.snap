@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Image should render Image component 1`] = `"<div class=\\"image-item\\"><img class=\\"image\\" src=\\"https://farm66.staticflickr.com/65535/48458406181_23a99e54c0.jpg\\" alt=\\"\\"/><div class=\\"image-metadata\\"><span>Owner: </span><span>Date Taken: </span><span>Click <a class=\\"link\\" target=\\"_blank\\" rel=\\"noopener noreferrer\\">here</a> for full Image</span><div><span>Tags:</span></div></div></div>"`;

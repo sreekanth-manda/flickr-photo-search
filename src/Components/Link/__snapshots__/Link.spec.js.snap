@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Link should render the Link component 1`] = `"<a class=\\"link\\" href=\\"blah href text\\" target=\\"_blank\\" rel=\\"noopener noreferrer\\">blah link text</a>"`;
