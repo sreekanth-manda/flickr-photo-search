@@ -9,8 +9,9 @@ class Image extends React.Component {
   constructor(props) {
     super(props);
     this.flickrGetPhotoInfo = this.flickrGetPhotoInfo.bind(this);
+    this.handleImageClick = this.handleImageClick.bind(this);
     this.state = {
-      imageMetaData: {}
+      imageData: {}
     };
   }
 
@@ -36,31 +37,27 @@ class Image extends React.Component {
       })
   }
 
-  componentDidMount() {
-    this.flickrGetPhotoInfo();
-  }
+  // componentDidMount() {
+  //   this.flickrGetPhotoInfo();
+  // }
 
-  componentWillUpdate(prevProps) {
-    if (prevProps.image.id !== this.props.image.id) {
-      this.flickrGetPhotoInfo();
-    }
+  // componentWillUpdate(prevProps) {
+  //   if (prevProps.image.id !== this.props.image.id) {
+  //     this.flickrGetPhotoInfo();
+  //   }
+  // }
+
+  handleImageClick(event) {
+    event.preventDefault();
+    this.props.onImageClick(this.props.image);
   }
 
   render() {
     return (
       <div className="image-item">
-        <img className="image" src={getImageUrl(this.props.image)} alt="" />
+        <img className="image" src={getImageUrl(this.props.image)} onClick={this.handleImageClick} alt="" />
         <div className="image-metadata">
-          <span>Owner: {this.state.imageMetaData.owner}</span>
-          <span>Date Taken: {this.state.imageMetaData.dateTaken}</span>
-          <span>Click <Link hrefText={this.state.imageMetaData.url} linkText={'here'} /> for full Image</span>
-          <div>
-            <span>Tags:</span>
-            {this.state.imageMetaData.tags &&
-              this.state.imageMetaData.tags.map((item, key) => {
-                return <span className="tag" key={shortid.generate()}>{item}{','}</span>
-              })}
-          </div>
+          <span>Click here</span>
         </div>
       </div>
     );

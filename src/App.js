@@ -1,8 +1,10 @@
 import React from 'react';
 import ImageList from './Components/ImageList/ImageList';
 import SearchField from './Components/SearchField/SearchField';
+import FullImage from './Components/FullImage/FullImage';
+import Error from './Components/Error/Error';
 import flickrServices from './Services/FlickrService';
-import { isScrollAreaAvailable } from './Utils/Utils';
+import { isScrollAreaAvailable, getImageUrl } from './Utils/Utils';
 import "./App.css";
 
 export default class App extends React.Component {
@@ -11,11 +13,17 @@ export default class App extends React.Component {
     this.state = {
       searchText: "",
       imageList: [],
-      pageNumber: 1
+      pageNumber: 1,
+      error: false,
+      loading: false,
+      showFullImage: false,
+      currentImage: {}
     };
 
     this.onSearchInputChange = this.onSearchInputChange.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
+    this.onImageClick = this.onImageClick.bind(this);
+    this.hideFullImage = this.hideFullImage.bind(this);
   }
 
   componentDidMount() {
@@ -27,49 +35,66 @@ export default class App extends React.Component {
   };
 
   handleScroll() {
-    const page = this.state.pageNumber + 1;
-
     if (!isScrollAreaAvailable()) {
-      flickrServices.searchFlickrImages(this.state.searchText, page)
+      this.setState({ loading: true });
+      flickrServices.searchFlickrImages(this.state.searchText, this.state.pageNumber + 1)
         .then(jsonResp => {
-          jsonResp.body.photos.photo.forEach(photo => this.state.imageList.push(photo));
+          jsonResp.body.photos.photo.forEach(photo => {
+            flickrServices.getPhoto(getImageUrl(photo))
+              .then(() => this.state.imageList.push(photo))
+              .catch((error) => console.log(error));
+          });
           this.setState({
             pageNumber: jsonResp.body.photos.page,
-            imageList: this.state.imageList
+            imageList: this.state.imageList,
+            error: false,
+            loading: false
           });
         })
-        .catch(err => {
-          console.log(err);
-        });
+        .catch(err => this.setState({ error: true, loading: false }));
     }
   }
 
-onSearchInputChange(evt) {
-  const searchText = evt.target.value;
-  this.setState({ searchText });
+  onSearchInputChange(evt) {
+    const searchText = evt.target.value;
+    this.setState({ searchText, loading: true });
 
-  flickrServices.searchFlickrImages(this.state.searchText)
-    .then(jsonResp => {
-      this.setState({ imageList: jsonResp.body.photos.photo });
-    })
-    .catch(err => {
-      console.log(err);
-    });
-}
+    flickrServices.searchFlickrImages(this.state.searchText)
+      .then(jsonResp => {
+        this.setState({
+          imageList: jsonResp.body.photos.photo,
+          error: false,
+          loading: false
+        });
+      })
+      .catch(err => this.setState({ error: true, loading: false }));
+  }
 
-render() {
-  return (
-    <div className="app">
-      <div className="app-header">
-        <span className="app-title">Flickr Photo Search</span>
-        <SearchField searchText={this.state.searchText} onSearchInputChange={this.onSearchInputChange} />
+  hideFullImage() {
+    this.setState({ showFullImage: false });
+  }
+
+  onImageClick(imageData) {
+    this.setState({ showFullImage: true, currentImage: imageData });
+  }
+
+  render() {
+    return (
+      <div className="app">
+        <div className="app-header">
+          <span className="app-title">Flickr Photo Search</span>
+          <SearchField searchText={this.state.searchText} onSearchInputChange={this.onSearchInputChange} />
+        </div>
+        <div className="app-content" ref="appContent">
+          {this.state.imageList.length !== 0 &&
+            <ImageList
+              images={this.state.imageList}
+              onImageClick={this.onImageClick}
+            />
+          }
+        </div>
+        {this.state.showFullImage && <FullImage hideFullImage={this.hideFullImage} image={this.state.currentImage} />}
       </div>
-      <div className="app-content" ref="appContent">
-        {this.state.imageList.length
-          ? <ImageList images={this.state.imageList} />
-          : <span className="prompt-search">Try searching for some image in the search bar</span>}
-      </div>
-    </div>
-  );
-}
+    );
+  }
 }
