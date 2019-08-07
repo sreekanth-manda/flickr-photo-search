@@ -50,25 +50,27 @@ class FullImage extends React.Component {
   render() {
     return (
       <div className="overlay">
-        <button class="close" onClick={this.handleKeyPress} />
-        <div className="full-image">
-          <div >
-            <img src={getImageUrl(this.props.image)} alt="" />
-          </div>
-          <div className="image-metadata">
-            <span>Owner: {this.state.imageMetaData.owner}</span>
-            <span>Date Taken: {this.state.imageMetaData.dateTaken}</span>
-            <div className="image-tags">
-              <span>Tags:</span>
-              <span className="tags">
-                {
-                  this.state.imageMetaData.tags &&
-                  this.state.imageMetaData.tags.map((item, key) => <span className="tag" key={shortid.generate()}>{item}{','}</span>)
-                }
-              </span>
+        <div>
+          <button class="close" onClick={this.handleKeyPress} />
+          <div className="full-image">
+            <div className="image-container">
+              <img src={getImageUrl(this.props.image)} alt="" />
             </div>
+            <div className="image-metadata">
+              <span>Owner: {this.state.imageMetaData.owner}</span>
+              <span>Date Taken: {this.state.imageMetaData.dateTaken}</span>
+              <div className="image-tags">
+                <span>Tags:</span>
+                <span className="tags">
+                  {
+                    this.state.imageMetaData.tags &&
+                    this.state.imageMetaData.tags.map((item, key) => <span className="tag" key={shortid.generate()}>{item}{','}</span>)
+                  }
+                </span>
+              </div>
+            </div>
+            {this.state.loading && <div className='app-loader' />}
           </div>
-          {this.state.loading && <div className='app-loader' />}
         </div>
       </div>
     );
