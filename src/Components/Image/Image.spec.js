@@ -2,10 +2,8 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import Image from './Image';
 
-const mockFlickrGetPhotoInfo = jest.fn();
-
 describe('Image', () => {
-  const compoentProps = {
+  const componentProps = {
     image: {
       farm: 66,
       id: "48458406181",
@@ -20,14 +18,7 @@ describe('Image', () => {
   }
 
   test('should render Image component', () => {
-    const wrapper = shallow(<Image {...compoentProps} />);
+    const wrapper = shallow(<Image {...componentProps} />);
     expect(wrapper.html()).toMatchSnapshot();
-  });
-
-  test('should call flickrGetPhotoInfo', () => {
-    const wrapper = shallow(<Image  {...compoentProps} />);
-    wrapper.instance().flickrGetPhotoInfo = mockFlickrGetPhotoInfo;
-    wrapper.setProps({ image: { id: '234234' } });
-    expect(mockFlickrGetPhotoInfo.mock.calls.length).toBe(1);
   });
 });

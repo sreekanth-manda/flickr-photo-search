@@ -2,48 +2,26 @@
 .image-item {
   display: flex;
   flex-direction: column;
-  margin: 25px;
-  width: 80%;
-  box-shadow: 10px 10px 5px -5px rgba(133,128,133,1);
+  margin: 15px 10px;
+  padding: 2px;
+  width: 100%;
   background-color: darkcyan;
   color: white;
   font-size: 14px;
   font-style: italic;
+  border-radius: 5px;
 
   @media screen and (min-width: 600px) {
-      width: 200px;
+      width: 245px;
   }
 }
 
 .image {
-  width: 100%;
   height: 150px;
+  cursor: pointer;
+  border-radius: 5px;
 
   @media screen and (min-width: 600px) {
-      width: 200px;
-  }
-}
-
-.image-metadata {
-  display: flex;
-  flex-direction: column;
-  overflow-wrap: break-word;
-  margin: 20px 5px 5px 5px;
-  font-size: 14px;
-
-  & > span, div {
-    margin: 5px;
-  }
-}
-
-.metadata-item {
-  margin: 5px;
-}
-
-.tag {
-  margin: 5px;
-
-  & ::after {
-    content: ',';
+      width: 245px;
   }
 }
