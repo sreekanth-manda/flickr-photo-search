@@ -10,7 +10,7 @@ body {
 .app-header {
   width: 100%;
   background-color: #942424;
-  height: 180px;
+  height: 120px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,7 +20,6 @@ body {
 .app-title {
   font-size: 32px;
   color: white;
-  margin: 10px;
 }
 
 .app-content {
@@ -35,4 +34,27 @@ body {
   font-size: 22px;
   font-weight: 600;
   align-self: center;
+}
+
+
+.app-loader {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border: 4px solid red;
+  border-radius: 50%;
+  border-top-color: rgb(12, 12, 12);
+  animation: spin 1s ease-in-out infinite;
+  -webkit-animation: spin 1s ease-in-out infinite;
+  position: fixed;
+  bottom: 0;
+  left: 48%;
+  margin: 10px;
+}
+
+@keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
 }

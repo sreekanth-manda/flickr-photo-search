@@ -2,7 +2,6 @@ import React from 'react';
 import shortid from 'shortid';
 import { getImageUrl } from '../../Utils/Utils';
 import flickerService from '../../Services/FlickrService';
-import Link from '../Link/Link';
 import './FullImage.scss';
 
 class FullImage extends React.Component {
@@ -11,11 +10,14 @@ class FullImage extends React.Component {
     this.flickrGetPhotoInfo = this.flickrGetPhotoInfo.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.state = {
-      imageMetaData: {}
+      imageMetaData: {},
+      loading: false
     };
   }
 
   flickrGetPhotoInfo() {
+    this.setState({ loading: true });
+
     return flickerService.getPhotoInfo(this.props.image.id)
       .then(jsonResp => {
         const data = {};
@@ -28,18 +30,16 @@ class FullImage extends React.Component {
         }, [])
 
         data['tags'] = tags;
-        data['url'] = getImageUrl(this.props.image);
 
-        this.setState({ imageMetaData: data });
+        this.setState({ imageMetaData: data, loading: false });
       })
       .catch(err => {
         console.log(err);
+        this.setState({ loading: false });
       })
   }
 
   handleKeyPress(event) {
-    console.log({ event })
-    console.log('this is called');
     this.props.hideFullImage();
   }
 
@@ -50,7 +50,7 @@ class FullImage extends React.Component {
   render() {
     return (
       <div className="overlay">
-        <button class="close" onClick={this.handleKeyPress} onKeyUp={this.handleKeyPress} onKeyDown={this.handleKeyPress} />
+        <button class="close" onClick={this.handleKeyPress} />
         <div className="full-image">
           <div >
             <img src={getImageUrl(this.props.image)} alt="" />
@@ -58,14 +58,17 @@ class FullImage extends React.Component {
           <div className="image-metadata">
             <span>Owner: {this.state.imageMetaData.owner}</span>
             <span>Date Taken: {this.state.imageMetaData.dateTaken}</span>
-            <div>
+            <div className="image-tags">
               <span>Tags:</span>
-              {this.state.imageMetaData.tags &&
-                this.state.imageMetaData.tags.map((item, key) => {
-                  return <span className="tag" key={shortid.generate()}>{item}{','}</span>
-                })}
+              <span className="tags">
+                {
+                  this.state.imageMetaData.tags &&
+                  this.state.imageMetaData.tags.map((item, key) => <span className="tag" key={shortid.generate()}>{item}{','}</span>)
+                }
+              </span>
             </div>
-         </div>
+          </div>
+          {this.state.loading && <div className='app-loader' />}
         </div>
       </div>
     );

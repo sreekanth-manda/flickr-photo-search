@@ -25,11 +25,6 @@ describe('App', () => {
     expect(wrapper.find('SearchField').length).toBe(1);
   });
 
-  it('should show prompt search text when no results', () => {
-    const wrapper = mount(<App />);
-    expect(wrapper.find('.prompt-search').text()).toBe('Try searching for some image in the search bar');
-  });
-
   it('should set state with the input search text value ', () => {
     const wrapper = mount(<App />);
     wrapper.find('.search-input').simulate('change', { target: { value: 'Hello' } });

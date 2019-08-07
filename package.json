@@ -7,7 +7,8 @@
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1",
     "shortid": "^2.2.14",
-    "superagent": "^5.1.0"
+    "superagent": "^5.1.0",
+    "throttle-debounce": "^2.1.0"
   },
   "scripts": {
     "start": "react-scripts start",

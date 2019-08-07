@@ -4,8 +4,8 @@ import { BASE_URL, TIMEOUT } from '../Constants/Constants';
 const searchFlickrImages = (searchText, page) => {
   const method = 'flickr.photos.search';
   const url = page
-    ? `${BASE_URL}&method=${method}&text=${searchText}&per_page=30&page=${page}`
-    : `${BASE_URL}&method=${method}&text=${searchText}&per_page=30`;
+    ? `${BASE_URL}&method=${method}&text=${searchText}&per_page=50&page=${page}`
+    : `${BASE_URL}&method=${method}&text=${searchText}&per_page=50`;
 
   return request
     .get(url)

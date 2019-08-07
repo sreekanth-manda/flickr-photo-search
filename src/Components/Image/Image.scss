@@ -9,6 +9,7 @@
   color: white;
   font-size: 14px;
   font-style: italic;
+  border-radius: 5px;
 
   @media screen and (min-width: 600px) {
       width: 245px;
@@ -18,32 +19,9 @@
 .image {
   height: 150px;
   cursor: pointer;
+  border-radius: 5px;
 
   @media screen and (min-width: 600px) {
       width: 245px;
-  }
-}
-
-.image-metadata {
-  display: flex;
-  flex-direction: column;
-  overflow-wrap: break-word;
-  margin: 5px 0px;
-  font-size: 14px;
-
-  & > span, div {
-    margin: 5px;
-  }
-}
-
-.metadata-item {
-  margin: 5px;
-}
-
-.tag {
-  margin: 5px;
-
-  & ::after {
-    content: ',';
   }
 }

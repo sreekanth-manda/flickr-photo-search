@@ -1,8 +1,8 @@
 import React from 'react';
+import { throttle } from 'throttle-debounce';
 import ImageList from './Components/ImageList/ImageList';
 import SearchField from './Components/SearchField/SearchField';
 import FullImage from './Components/FullImage/FullImage';
-import Error from './Components/Error/Error';
 import flickrServices from './Services/FlickrService';
 import { isScrollAreaAvailable, getImageUrl } from './Utils/Utils';
 import "./App.css";
@@ -11,7 +11,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchText: "",
+      searchText: '',
       imageList: [],
       pageNumber: 1,
       error: false,
@@ -27,7 +27,7 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll);
+    window.addEventListener('scroll', throttle(800, this.handleScroll));
   };
 
   componentWillUnmount() {
@@ -35,20 +35,29 @@ export default class App extends React.Component {
   };
 
   handleScroll() {
+    const promises = [];
+    const images = [];
+
     if (!isScrollAreaAvailable()) {
       this.setState({ loading: true });
+
       flickrServices.searchFlickrImages(this.state.searchText, this.state.pageNumber + 1)
         .then(jsonResp => {
           jsonResp.body.photos.photo.forEach(photo => {
-            flickrServices.getPhoto(getImageUrl(photo))
-              .then(() => this.state.imageList.push(photo))
-              .catch((error) => console.log(error));
+            promises.push(
+              flickrServices.getPhoto(getImageUrl(photo))
+                .then(() => images.push(photo))
+                .catch((error) => console.log(error))
+            );
           });
-          this.setState({
-            pageNumber: jsonResp.body.photos.page,
-            imageList: this.state.imageList,
-            error: false,
-            loading: false
+
+          Promise.all(promises).then(() => {
+            this.setState((state, props) => ({
+              pageNumber: jsonResp.body.photos.page,
+              imageList: state.imageList.concat(images),
+              error: false,
+              loading: false
+            }))
           });
         })
         .catch(err => this.setState({ error: true, loading: false }));
@@ -60,13 +69,12 @@ export default class App extends React.Component {
     this.setState({ searchText, loading: true });
 
     flickrServices.searchFlickrImages(this.state.searchText)
-      .then(jsonResp => {
+      .then(jsonResp =>
         this.setState({
           imageList: jsonResp.body.photos.photo,
           error: false,
           loading: false
-        });
-      })
+        }))
       .catch(err => this.setState({ error: true, loading: false }));
   }
 
@@ -92,6 +100,7 @@ export default class App extends React.Component {
               onImageClick={this.onImageClick}
             />
           }
+          {this.state.loading && <div className='app-loader' />}
         </div>
         {this.state.showFullImage && <FullImage hideFullImage={this.hideFullImage} image={this.state.currentImage} />}
       </div>
