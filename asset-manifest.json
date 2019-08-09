@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/flickr-photo-search/static/css/main.449e9822.chunk.css",
+    "main.js": "/flickr-photo-search/static/js/main.8f9cad03.chunk.js",
+    "main.js.map": "/flickr-photo-search/static/js/main.8f9cad03.chunk.js.map",
+    "runtime~main.js": "/flickr-photo-search/static/js/runtime~main.f3b1f7d1.js",
+    "runtime~main.js.map": "/flickr-photo-search/static/js/runtime~main.f3b1f7d1.js.map",
+    "static/js/2.ad525d50.chunk.js": "/flickr-photo-search/static/js/2.ad525d50.chunk.js",
+    "static/js/2.ad525d50.chunk.js.map": "/flickr-photo-search/static/js/2.ad525d50.chunk.js.map",
+    "index.html": "/flickr-photo-search/index.html",
+    "precache-manifest.c3647c27444270e002fda2c5e8b6f053.js": "/flickr-photo-search/precache-manifest.c3647c27444270e002fda2c5e8b6f053.js",
+    "service-worker.js": "/flickr-photo-search/service-worker.js",
+    "static/css/main.449e9822.chunk.css.map": "/flickr-photo-search/static/css/main.449e9822.chunk.css.map"
+  }
+}
